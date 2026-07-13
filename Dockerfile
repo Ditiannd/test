@@ -2,9 +2,10 @@ FROM php:8.2-fpm-alpine
 
 RUN apk add --no-cache \
     nginx nodejs npm curl git zip unzip \
-    libpng-dev libjpeg-dev libzip-dev oniguruma-dev
+    libpng-dev jpeg-dev libzip-dev oniguruma-dev
 
-RUN docker-php-ext-install \
+RUN docker-php-ext-configure gd --with-jpeg && \
+    docker-php-ext-install \
     pdo_mysql mbstring zip gd bcmath opcache
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
